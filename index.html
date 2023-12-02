@@ -3,7 +3,7 @@
 <head>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="https://media.discordapp.net/attachments/1139741210743930890/1180353130953707560/Untitled677_20231201224140.png">
-    <style>
+   <style>
         body, html {
             margin: 0;
             padding: 0;
@@ -22,6 +22,30 @@
     </style>
 </head>
 <body>
-    <iframe src="https://hd.360kora-live.com/"></iframe>
+    <iframe id="myFrame" src="https://hd.360kora-live.com/"></iframe>
+    <script>
+        // Get a reference to the iframe element
+        var iframe = document.getElementById('myFrame');
+
+        // Add an event listener for the 'load' event of the iframe
+        iframe.addEventListener('load', function() {
+            // Use the PostMessage API to send a message to the iframe content window
+            iframe.contentWindow.postMessage('Hello from parent!', 'https://hd.360kora-live.com/');
+        });
+
+        // Add an event listener for the 'message' event on the window
+        window.addEventListener('message', function(event) {
+            // Check the origin of the message
+            if (event.origin !== 'https://hd.360kora-live.com/') {
+                return;
+            }
+
+            // Get the redirect URL from the iframe content window
+            var redirectUrl = event.data;
+
+            // Update the iframe's src attribute with the redirect URL
+            iframe.src = redirectUrl;
+        });
+    </script>
 </body>
 </html>
